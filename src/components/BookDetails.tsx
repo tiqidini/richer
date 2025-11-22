@@ -67,11 +67,43 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                                     <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1">{book.title}</h2>
                                     <p className="text-cyan-400 text-sm font-medium mb-4">
                                         {book.originalTitle} • {book.year}
-                                        key={idx}
-                                        className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300"
+                                        {book.coAuthor && <span className="text-gray-400"> • w/ {book.coAuthor}</span>}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="mb-6">
+                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Сюжет</h3>
+                                <p className="text-gray-200 leading-relaxed text-sm sm:text-base">
+                                    {book.description}
+                                </p>
+                            </div>
+
+                            {book.rating && book.review && (
+                                <div className="mb-6 p-4 rounded-xl bg-cyan-900/10 border border-cyan-500/20">
+                                    <div className="flex items-center justify-between mb-2">
+                                        <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-wider">Досье</h3>
+                                        <div className="flex items-center gap-1">
+                                            <span className="text-lg font-bold text-white">{book.rating}</span>
+                                            <span className="text-xs text-cyan-500">/ 5.0</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-cyan-100/80 text-sm italic border-l-2 border-cyan-500/50 pl-3">
+                                        "{book.review}"
+                                    </p>
+                                </div>
+                            )}
+
+                            <div className="mb-8">
+                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Персонажи</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {book.characters.map((char, idx) => (
+                                        <span
+                                            key={idx}
+                                            className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300"
                                         >
-                                        {char}
-                                    </span>
+                                            {char}
+                                        </span>
                                     ))}
                                 </div>
                             </div>

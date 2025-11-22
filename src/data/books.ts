@@ -1,16 +1,13 @@
 export interface Book {
     id: number;
     title: string;
-export interface Book {
-    id: number;
-    title: string;
     originalTitle: string;
     year: number;
     description: string;
     characters: string[];
     coverUrl: string;
     coAuthor?: string;
-    rating?: number; // 0 to 5
+    rating?: number;
     review?: string;
 }
 
