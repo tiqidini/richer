@@ -12,9 +12,9 @@ export default defineConfig({
             includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
             manifest: {
                 name: 'Jack Reacher Tracker',
-                short_name: 'ReacherTracker',
+                short_name: 'Reacher',
                 description: 'Track your Jack Reacher reading progress',
-                theme_color: '#ffffff',
+                theme_color: '#0f172a',
                 icons: [
                     {
                         src: 'pwa-192x192.png',
