@@ -29,6 +29,9 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                         src={book.coverUrl}
                         alt={book.title}
                         className="w-full h-full object-cover opacity-50 blur-sm scale-110"
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                        }}
                     />
                     <button
                         onClick={onClose}
@@ -45,11 +48,16 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                     <div className="flex flex-col sm:flex-row gap-6">
                         {/* Cover Image */}
                         <div className="flex-shrink-0 mx-auto sm:mx-0">
-                            <img
-                                src={book.coverUrl}
-                                alt={book.title}
-                                className="w-32 sm:w-48 rounded-lg shadow-2xl border border-white/10"
-                            />
+                            <div className="w-32 h-48 md:w-48 md:h-72 rounded-lg shadow-2xl overflow-hidden border-2 border-white/10 flex-shrink-0 bg-gray-800 flex items-center justify-center">
+                                <img
+                                    src={book.coverUrl}
+                                    alt={book.title}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(book.title)}&background=0f172a&color=22d3ee&size=300&font-size=0.33`;
+                                    }}
+                                />
+                            </div>
                         </div>
 
                         {/* Info */}

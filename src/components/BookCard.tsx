@@ -57,6 +57,9 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
                         src={book.coverUrl}
                         alt=""
                         className="w-full h-full object-cover opacity-20 blur-md group-hover:scale-110 transition-transform duration-700"
+                        onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                        }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/80 to-transparent" />
                 </div>
@@ -64,12 +67,15 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
                 <div className="relative z-10 p-6 flex flex-col h-full">
                     <div className="flex items-start justify-between gap-4 mb-4">
                         {/* Cover Thumbnail */}
-                        <div className="w-20 h-32 flex-shrink-0 rounded-lg shadow-lg overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors">
+                        <div className="w-20 h-32 flex-shrink-0 rounded-lg shadow-lg overflow-hidden border border-white/10 group-hover:border-white/30 transition-colors bg-gray-800 flex items-center justify-center">
                             <img
                                 src={book.coverUrl}
                                 alt={book.title}
                                 className="w-full h-full object-cover"
                                 loading="lazy"
+                                onError={(e) => {
+                                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(book.title)}&background=0f172a&color=22d3ee&size=200&font-size=0.33`;
+                                }}
                             />
                         </div>
 

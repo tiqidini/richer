@@ -4,12 +4,21 @@ const STORAGE_KEY = 'reacher-progress';
 
 export function useProgress() {
     const [readBookIds, setReadBookIds] = useState<number[]>(() => {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        } catch (error) {
+            console.error('Failed to load progress:', error);
+            return [];
+        }
     });
 
     useEffect(() => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(readBookIds));
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(readBookIds));
+        } catch (error) {
+            console.error('Failed to save progress:', error);
+        }
     }, [readBookIds]);
 
     const toggleRead = (bookId: number) => {
