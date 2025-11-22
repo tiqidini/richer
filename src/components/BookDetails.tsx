@@ -67,28 +67,11 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                                     <h2 className="text-2xl sm:text-3xl font-bold text-white mb-1">{book.title}</h2>
                                     <p className="text-cyan-400 text-sm font-medium mb-4">
                                         {book.originalTitle} • {book.year}
-                                        {book.coAuthor && <span className="text-gray-400"> • w/ {book.coAuthor}</span>}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mb-6">
-                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Сюжет</h3>
-                                <p className="text-gray-200 leading-relaxed text-sm sm:text-base">
-                                    {book.description}
-                                </p>
-                            </div>
-
-                            <div className="mb-8">
-                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Персонажи</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {book.characters.map((char, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300"
+                                        key={idx}
+                                        className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-gray-300"
                                         >
-                                            {char}
-                                        </span>
+                                        {char}
+                                    </span>
                                     ))}
                                 </div>
                             </div>

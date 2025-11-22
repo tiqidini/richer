@@ -103,22 +103,6 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
               ${isRead ? 'text-cyan-300' : 'text-gray-500'}
             `}>
                             Книга #{book.id} • {book.year}
-                        </span>
-
-                        <h3 className={`
-              text-lg font-bold leading-tight mb-2 transition-colors duration-300
-              ${isRead ? 'text-white' : 'text-gray-200 group-hover:text-white'}
-            `}>
-                            {book.title}
-                        </h3>
-
-                        <p className="text-xs text-gray-400 line-clamp-2 mb-2">
-                            {book.description}
-                        </p>
-                    </div>
-
-                    <div className="mt-4 flex items-center justify-between text-xs text-gray-500">
-                        <span>Подробнее &rarr;</span>
                     </div>
                 </div>
             </div>
