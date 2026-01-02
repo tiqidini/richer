@@ -65,14 +65,16 @@ async function fetchCoverUrl(title) {
 
 async function main() {
     console.log('Fetching cover URLs from Google Books API...\n');
+    const results = [];
 
     for (const book of books) {
         try {
             const url = await fetchCoverUrl(book.title);
             if (url) {
-                console.log(`${book.id}. ${book.title} (${book.year}):\n   ${url}\n`);
+                console.log(`${book.id}. ${book.title} (${book.year}): FOUND`);
+                results.push({ id: book.id, coverUrl: url });
             } else {
-                console.log(`${book.id}. ${book.title} (${book.year}): NOT FOUND\n`);
+                console.log(`${book.id}. ${book.title} (${book.year}): NOT FOUND`);
             }
             // Rate limiting
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -80,6 +82,10 @@ async function main() {
             console.error(`Error fetching ${book.title}:`, e.message);
         }
     }
+
+    const fs = await import('fs');
+    fs.writeFileSync('cover-urls.json', JSON.stringify(results, null, 2));
+    console.log('\nResults saved to cover-urls.json');
 }
 
 main();
