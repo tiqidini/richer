@@ -13,17 +13,23 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
                 onClick={onClose}
             />
 
-            {/* Modal Content */}
-            <div className="relative w-full max-w-2xl bg-[#0f172a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            {/* Modal Content - Bottom Sheet on Mobile, Centered on Desktop */}
+            <div className="relative w-full sm:max-w-2xl bg-[#0f172a] rounded-t-2xl sm:rounded-2xl border-t sm:border border-white/10 shadow-2xl overflow-hidden flex flex-col h-[85vh] sm:h-auto sm:max-h-[90vh] animate-slide-up sm:animate-none">
+                
+                {/* Mobile Drag Indicator */}
+                <div className="sm:hidden w-full flex justify-center pt-3 pb-1 bg-[#0f172a] absolute top-0 z-30" onClick={onClose}>
+                    <div className="w-12 h-1.5 rounded-full bg-gray-600/50"></div>
+                </div>
+
                 {/* Header Image/Banner */}
-                <div className="relative h-48 sm:h-64 overflow-hidden">
+                <div className="relative h-48 sm:h-64 overflow-hidden flex-shrink-0">
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] to-transparent z-10" />
                     <img
                         src={book.coverUrl}
@@ -35,7 +41,7 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                     />
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 text-white hover:bg-white/20 transition-colors"
+                        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 text-white hover:bg-white/20 transition-colors hidden sm:block"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -44,8 +50,8 @@ export const BookDetails: React.FC<BookDetailsProps> = ({ book, isOpen, onClose,
                 </div>
 
                 {/* Content */}
-                <div className="relative z-20 -mt-20 px-6 pb-6 overflow-y-auto custom-scrollbar">
-                    <div className="flex flex-col sm:flex-row gap-6">
+                <div className="relative z-20 -mt-20 px-6 pb-safe sm:pb-6 overflow-y-auto custom-scrollbar flex-1 bg-[#0f172a] sm:bg-transparent">
+                    <div className="flex flex-col sm:flex-row gap-6 pb-8">
                         {/* Cover Image */}
                         <div className="flex-shrink-0 mx-auto sm:mx-0">
                             <div className="w-32 h-48 md:w-48 md:h-72 rounded-lg shadow-2xl overflow-hidden border-2 border-white/10 flex-shrink-0 bg-gray-800 flex items-center justify-center">

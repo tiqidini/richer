@@ -4,7 +4,7 @@ import { Book } from '../data/books';
 interface BookCardProps {
     book: Book;
     isRead: boolean;
-    onToggle: (e: React.MouseEvent) => void;
+    onToggle: (e: React.MouseEvent | React.KeyboardEvent) => void;
     onSelect: () => void;
 }
 
@@ -14,6 +14,8 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
+        if (window.matchMedia('(hover: none)').matches) return; // Disable tilt on touch devices
+
         const card = cardRef.current;
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -30,15 +32,26 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
         setRotate({ x: 0, y: 0 });
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect();
+        }
+    };
+
     return (
         <div
             ref={cardRef}
+            role="button"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={onSelect}
             className={`
-        relative group cursor-pointer transition-all duration-500 ease-out
-        transform preserve-3d h-full
+        relative group cursor-pointer transition-all duration-300 ease-out
+        transform preserve-3d h-full focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-2xl
+        active:scale-95 touch-manipulation
       `}
             style={{
                 transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1, 1, 1)`,

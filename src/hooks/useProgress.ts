@@ -29,9 +29,23 @@ export function useProgress() {
         );
     };
 
+    const importProgress = (json: string) => {
+        try {
+            const data = JSON.parse(json);
+            if (Array.isArray(data) && data.every(id => typeof id === 'number')) {
+                setReadBookIds(data);
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.error('Import failed', e);
+            return false;
+        }
+    };
+
     const isRead = (bookId: number) => readBookIds.includes(bookId);
 
     const progress = readBookIds.length;
 
-    return { readBookIds, toggleRead, isRead, progress };
+    return { readBookIds, toggleRead, isRead, progress, importProgress };
 }
