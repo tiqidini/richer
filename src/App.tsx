@@ -1,15 +1,36 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { books, Book } from './data/books';
 import { useProgress } from './hooks/useProgress';
 import { BookList } from './components/BookList';
 import { ProgressBar } from './components/ProgressBar';
 import { BookDetails } from './components/BookDetails';
 import { SettingsModal } from './components/SettingsModal';
+import { FilterBar } from './components/FilterBar';
+import { ScrollToTopButton } from './components/ScrollToTopButton';
 
 function App() {
     const { readBookIds, toggleRead, progress, importProgress } = useProgress();
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+
+    // Filter books logic
+    const filteredBooks = useMemo(() => {
+        return books.filter(book => {
+            const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                  book.originalTitle.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesFilter = showUnreadOnly ? !readBookIds.includes(book.id) : true;
+            return matchesSearch && matchesFilter;
+        });
+    }, [books, searchQuery, showUnreadOnly, readBookIds]);
+
+    // Calculate next book to read (first unread by ID)
+    const nextBookId = useMemo(() => {
+        const sortedBooks = [...books].sort((a, b) => a.id - b.id);
+        const firstUnread = sortedBooks.find(book => !readBookIds.includes(book.id));
+        return firstUnread ? firstUnread.id : undefined;
+    }, [books, readBookIds]);
 
     return (
         <div className="min-h-screen bg-[#0f172a] text-white selection:bg-cyan-500/30 font-sans">
@@ -20,10 +41,10 @@ function App() {
             </div>
 
             <div className="relative z-10 flex flex-col items-center pt-12">
-                <header className="text-center mb-12 px-4 relative w-full max-w-7xl mx-auto">
+                <header className="text-center mb-6 px-4 relative w-full max-w-7xl mx-auto">
                     <button 
                         onClick={() => setIsSettingsOpen(true)}
-                        className="absolute right-4 top-0 p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                        className="absolute right-4 top-0 p-2 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors z-20"
                         title="Настройки данных"
                     >
                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -35,19 +56,29 @@ function App() {
                     <h1 className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
                         Хроники Джека Ричера
                     </h1>
-                    <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
+                    <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto mb-8">
                         Отслеживайте свой путь по легендарной серии триллеров Ли Чайлда.
                     </p>
+
+                    <ProgressBar total={books.length} current={progress} />
                 </header>
 
+                <FilterBar 
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    showUnreadOnly={showUnreadOnly}
+                    onToggleUnread={() => setShowUnreadOnly(!showUnreadOnly)}
+                />
+
                 <BookList
-                    books={books}
+                    books={filteredBooks}
                     readBookIds={readBookIds}
+                    nextBookId={nextBookId}
                     onToggle={toggleRead}
                     onSelect={setSelectedBook}
                 />
 
-                <ProgressBar total={books.length} current={progress} />
+                <ScrollToTopButton />
 
                 {selectedBook && (
                     <BookDetails

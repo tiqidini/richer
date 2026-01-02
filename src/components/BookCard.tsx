@@ -4,11 +4,12 @@ import { Book } from '../data/books';
 interface BookCardProps {
     book: Book;
     isRead: boolean;
+    isNextUp?: boolean;
     onToggle: (e: React.MouseEvent | React.KeyboardEvent) => void;
     onSelect: () => void;
 }
 
-export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSelect }) => {
+export const BookCard: React.FC<BookCardProps> = ({ book, isRead, isNextUp, onToggle, onSelect }) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [rotate, setRotate] = useState({ x: 0, y: 0 });
 
@@ -61,9 +62,19 @@ export const BookCard: React.FC<BookCardProps> = ({ book, isRead, onToggle, onSe
         relative h-full overflow-hidden rounded-2xl border backdrop-blur-md transition-all duration-300
         ${isRead
                     ? 'bg-cyan-500/10 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)]'
-                    : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 shadow-xl'
+                    : isNextUp 
+                        ? 'bg-white/10 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] ring-1 ring-cyan-400/50'
+                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 shadow-xl'
                 }
       `}>
+                {isNextUp && (
+                    <div className="absolute top-0 right-0 z-20">
+                        <div className="bg-cyan-500 text-black text-[10px] font-bold px-3 py-1 rounded-bl-xl shadow-lg uppercase tracking-wider">
+                            Следующая
+                        </div>
+                    </div>
+                )}
+
                 {/* Background Cover Blur */}
                 <div className="absolute inset-0 z-0">
                     <img
